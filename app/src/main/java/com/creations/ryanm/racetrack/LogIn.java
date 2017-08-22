@@ -1,7 +1,7 @@
 package com.creations.ryanm.racetrack;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,15 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import java.io.BufferedReader;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class LogIn extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,View.OnClickListener{
     private GoogleApiClient mGoogleApiClient;
@@ -45,7 +39,7 @@ public class LogIn extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
     }
 
     private void signIn() {
@@ -71,26 +65,13 @@ public class LogIn extends AppCompatActivity implements GoogleApiClient.OnConnec
                 String id = acct.getId();
                 String name = acct.getDisplayName();
                 System.out.println("Signed in: " + name + " " + id);
-                try {
-                    FileOutputStream fos = openFileOutput("auth", MODE_PRIVATE);
-                    OutputStreamWriter osw = new OutputStreamWriter(fos);
-                    String output = "";
-                    if(id != null){
-                        output = output + id + "!";
-                    }
-                    if(name != null){
-                        output = output + name;
-                    }
-                    osw.write(output);
-                    osw.close();
-                    fos.close();
-                }catch (IOException e){
-                    System.out.println("File not written");
-                }
                 /*if(id != null) {
                     new AddUser().execute(id);
                 }*/
             }
+            Intent intent = new Intent(this,MapsActivity.class);
+            startActivity(intent);
+            finish();
         }
         else {
             System.out.println("Failed to sign in");
